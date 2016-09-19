@@ -1,0 +1,45 @@
+<!--定时器应用函数-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        /*
+        * 安排函数f()在未来调用模式
+        * 在等待了若干毫秒之后调用f()
+        * 如果设置了interval并没有设置end参数，则对f()调用将不会停止
+        * 只有指定了f(),才会从start=0的时刻开始
+        * 注意，调用invoke()不会阻塞，他会立即返回
+         */
+        function invoke(f, start, interval, end){
+            if(!start) start = 0;             //默认设置为0毫秒
+            if(arguments.length <= 2)
+                setTimeout(f, start);         //单词调用模式
+            else{                             //多次调用模式
+                setTimeout(repeat, start);
+                function repeat(){
+                    var h = setInterval(f, interval);
+                    if(end) {                //如果end定义，则在end毫秒后停止调用
+                        setTimeout(function () {
+                            clearInterval(h);
+                        }, end);
+                    }
+                }
+            }
+        }
+        window.onload = function(){
+            var test = document.getElementById("test");
+            invoke(function(){
+                test.style.backgroundColor = "rgb(255,0," + Math.floor(Math.random() * 255) + ")";
+            },2000,2000,10000);
+        }
+    </script>
+</head>
+<body>
+<span id="test">invoke test</span>
+</body>
+</html>
