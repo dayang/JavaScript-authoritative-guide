@@ -1,0 +1,27 @@
+<!--载入时生成文档内容-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        function factorial(n){
+            if(n <= 1) return n;
+            else return n*factorial(n-1);
+        }
+        document.write("<table>");  //开始创建HTML表
+        document.write("<tr><th>n</th><th>n!</th></tr>"); //输出表头
+        for(var i = 1; i <= 10; i++){
+            document.write("<tr><td>" + i + "</td><td>" + factorial(i) + "</td></tr>");
+        }
+        document.write("</table>");
+        document.write("Generated at " + new Date());
+    </script>
+</head>
+<body>
+<h1>Table of Factorials</h1>
+</body>
+</html>

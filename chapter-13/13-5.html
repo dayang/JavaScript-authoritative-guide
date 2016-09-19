@@ -1,0 +1,32 @@
+<!--onLoad()，当文档载入完成时调用一个函数-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        //注册函数f，当文档载入完成时执行这个函数f
+        //如果文档已经载入完成，尽快以异步方式执行它
+        function onLoad(f){
+            if(onLoad.loaded)                   //如果文档已经载入完成
+                window.setTimeout(f,0);         //将f放入异步队列，并尽快执行它
+            else if(window.addEventListener)    //注册时间的标准方法
+                window.addEventListener("load",f,false);
+            else if(window.attachEvent)         //IE8 以及更早的IE版本浏览器注册事件的功能
+                window.attachEvent("onload",f);
+        }
+
+        onLoad.loaded = false;
+
+        onLoad(function(){
+            onLoad.loaded = true;
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
