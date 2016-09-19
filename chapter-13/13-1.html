@@ -1,0 +1,44 @@
+<!--显示内容的简单客户端Javascript-->
+<!--元素的显示与隐藏-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .reveal *{
+            display: none;
+        }
+        .reveal *.handle{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+<script>
+    window.onload = function(){
+        var elements = document.getElementsByClassName("reveal");
+        for(var i = 0; i < elements.length; i++){
+            var elt = elements[i];
+            var title = elt.getElementsByClassName("handle")[0];
+            addRevealHandler(title,elt);
+        }
+        function addRevealHandler(title,elt){
+            title.onclick = function(){
+                if(elt.className === "reveal")
+                    elt.className = "revealed";
+                else if(elt.className === "revealed")
+                    elt.className = "reveal";
+            }
+        }
+    }
+</script>
+<div class="reveal">
+    <h1 class="handle">Click Here to Reveal Hidden Text</h1>
+    <p>This paragraph is hidden. It appears when you click on the title.</p>
+</div>
+</body>
+</html>

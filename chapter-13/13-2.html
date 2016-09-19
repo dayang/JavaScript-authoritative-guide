@@ -1,0 +1,33 @@
+<!-- 一个简单的Javascript数字时钟程序-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #clock{
+            font: bold 24pt snas;
+            background-color: #ddf;
+            padding: 10px;
+            border: solid black 2px;
+            border-radius: 10px;
+        }
+    </style>
+    <script>
+        function displayTime(){
+            var elt = document.getElementById("clock");
+            var now = new Date();
+            elt.innerHTML = now.toLocaleDateString() + now.toLocaleTimeString();
+            setTimeout(displayTime,1000);
+        }
+        window.onload = displayTime;
+    </script>
+</head>
+<body>
+<h1>Digital Clock</h1>
+<span id="clock"></span>
+</body>
+</html>
