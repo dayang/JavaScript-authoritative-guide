@@ -1,0 +1,42 @@
+<!--通过ID查找多个元素-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        /*
+        *函数接受任意多个字符串参数
+        * 每个参数将当做元素的id传给document.getElementById()
+        * 返回一个对象，它把这些id映射到对应的Element对象
+        * 如任何一个id对应的元素未定义，则抛出一个Error对象
+         */
+        function getElements(/*ids...*/){
+            var elements = {};
+            for(var i = 0; i < arguments.length; i++){
+                var id = arguments[i];
+                var elt = document.getElementById(id);
+                if(elt === null){
+                    throw new Error("No element with id: " + id);
+                }
+                elements[id] = elt;
+            }
+            return elements;
+        }
+
+        /*
+        Notice： 低于IE 8 版本的浏览器中，getElementById() 对匹配元素的ID不区分大小写，而且也
+        返回匹配name属性的元素
+         */
+    </script>
+</head>
+<body>
+<p>
+    Notice： 低于IE 8 版本的浏览器中，getElementById() 对匹配元素的ID不区分大小写，而且也
+    返回匹配name属性的元素
+</p>
+</body>
+</html>
