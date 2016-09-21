@@ -1,0 +1,76 @@
+<!--用innerHtml属性实现outerHtml属性-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        //用一个新的<b>元素替换n节点，并使n成为该元素的子节点，加粗该节点
+        function embolden(n){
+            if(typeof n === "string") n = document.getElementById(n);
+            var parent = n.parentNode;
+            var b = document.createElement("b");
+            parent.replaceChild(b,n);
+            b.appendChild(n);
+        }
+
+        //为是那些不支持的浏览器实现outerHTML属性
+        //假设浏览器确实支持innerHTML,并有个可扩展的Element.prototype
+        //并且可以定义getter和setter
+        (function(){
+            //如果outerHTML存在，则直接返回
+            if(document.createElement("div").outerHTML) return;
+
+            //返回this所引用元素的外部HTML
+            function outerHTMLGetter(){
+                var container = document.createElement("div");
+                container.appendChild(this.cloneNode(true));
+                return container.innerHTML;
+            }
+
+            function outerHTMLSetter(value){
+                var container = document.createElement("div");
+                container.innerHTML = value;
+                while(container.firstChild){
+                    this.parentNode.insertBefore(container.firstChild,this);
+                }
+                this.parentNode.removeChild(this);
+            }
+
+            if(Object.defineProperty){
+                Object.defineProperty(Element.prototype,"outerHTML",{
+                    get: outerHTMLGetter,
+                    set: outerHTMLSetter,
+                    enumerable: false,
+                    configurable: true
+                });
+            }else{
+                Element.prototype.__defineGetter__("outerHTML",outerHTMLGetter);
+                Element.prototype.__defineSetter__("outerHTML",outerHTMLSetter);
+            }
+        })();
+    </script>
+</head>
+<body>
+    <ul id="list1">
+        <li>1-1</li>
+        <li>1-2</li>
+        <li>1-3</li>
+    </ul>
+    <hr>
+    <ul id="list2">
+        <li>2-1</li>
+        <li>2-2</li>
+        <li>2-3</li>
+    </ul>
+    <script>
+        //将list2中的内容移动到list1中
+        var list1 = document.getElementById("list1");
+        var list2 = document.getElementById("list2");
+        while(list2.firstChild){
+            console.log(list2.firstChild.textContent);
+            list1.appendChild(list2.firstChild);
+        }
+    </script>
+</body>
+</html>

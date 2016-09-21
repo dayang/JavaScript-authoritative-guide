@@ -1,0 +1,40 @@
+<!--一个自动生成的目录表-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script>
+        /*
+        *这个模块注册了一个可在页面加载完成后自动运行的匿名函数，当执行这个函数时会去文档中查找
+        * id为"TOC"的元素。如果这个元素不存在，就创建一个元素
+        *
+        * 生成的TOC目录应当具有自己的css样式。整个目录区域的样式className设置为"TOCEntry"
+        * 同样我们为不同层级的目录标题定义不同的样式。<h1>标签生成的标题
+        * className为"TOCLevel1"，<h2>标签生成的标题className为"TOCLevel2",以此类推
+        * 段编号的样式为“TOCSectNum"
+        *
+        * 完整的CSS样式代码如下：
+        *
+        * #TOC{border: solid black 1px; margin: 10px; padding: 10px}
+        * .TOCEntry{ font-family: sans-serif; }
+        * .TOCEntry a{ text-decoration: none;}
+        * .TOCLevel1 { font-size: 16pt; font-weight: bold; }
+        * .TOCLevel2 { font-size: 12pt; margin-left: .5in;}
+        * .TOCSectNum:after {content: ": ";}
+        *
+        * 这段代码的最后一行表示每个段编号之后都有一个冒号和空格符。要想隐藏段编号，
+        * 请使用这行代码：
+        * .TOCSectNum {display: none}
+        *
+        * 这个模块需要onLoad()工具函数 见13-5.html
+         */
+        onLoad(function(){
+
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
