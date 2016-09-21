@@ -1,0 +1,42 @@
+<!--查找元素的后代中节点中的所有Text节点-->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+        //返回元素e的纯文本内容，递归进入其子元素
+        //该方法的效果类似于textContent属性
+        function textContent(e){
+            var child, type, s = "";
+            for(child = e.firstChild; child !== null; child = child.nextSibling){
+                type = child.nodeType;
+                if(type === 3 || type === 4){
+                    s += child.nodeValue;
+                }else if(type === 1){
+                    s += textContent(child);
+                }
+            }
+            return s;
+        }
+
+        //递归地把n的后代子节点中的所有Text节点内容转换为大写形式
+        // Text 和 CDATASection都是CharacterData的子类型，CharacterData定义了data属性，它和nodeValue的文本相同
+        function upcase(n){
+            if(n.nodeType === 3 || n.nodeType === 4){
+                n.data = n.data.toUpperCase();
+            }else{
+                for(var i = 0; i < n.childNodes.length; i++){
+                    upcase(n.childNodes[i]);
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
