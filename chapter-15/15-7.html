@@ -4,6 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <style>
+        #TOC{
+            border: solid black 1px;
+            margin: 10px;
+            padding: 10px
+        }
+        .TOCEntry{
+            font-family: sans-serif;
+        }
+        .TOCEntry a{
+            text-decoration: none;
+        }
+        .TOCLevel1 {
+            font-size: 16pt;
+            font-weight: bold;
+        }
+        .TOCLevel2 {
+            font-size: 12pt;
+            margin-left: .5in;
+        }
+        .TOCLevel3 {
+             font-size: 10pt;
+             margin-left: 1in;
+         }
+        .TOCSectNum:after {
+            content: ": ";
+        }
+    </style>
     <script>
         /*
         *这个模块注册了一个可在页面加载完成后自动运行的匿名函数，当执行这个函数时会去文档中查找
@@ -29,12 +57,128 @@
         *
         * 这个模块需要onLoad()工具函数 见13-5.html
          */
-        onLoad(function(){
+        function onLoad(f){
+            if(onLoad.loaded)                   //如果文档已经载入完成
+                window.setTimeout(f,0);         //将f放入异步队列，并尽快执行它
+            else if(window.addEventListener)    //注册时间的标准方法
+                window.addEventListener("load",f,false);
+            else if(window.attachEvent)         //IE8 以及更早的IE版本浏览器注册事件的功能
+                window.attachEvent("onload",f);
+        }
 
+        onLoad(function(){  //匿名函数定义了一个局部作用域
+            //查找TOC容器元素，若不存在，则创建
+            var toc = document.getElementById("TOC");
+            if(!toc){
+                toc = document.createElement("div");
+                toc.id = "TOC";
+                document.body.insertBefore(toc,document.body.firstChild);
+            }
+
+            //查找所有的标题元素
+            var headings;
+            if(document.querySelectorAll){
+                headings = document.querySelectorAll("h1,h2,h3,h4,h5,h6");
+            }else{
+                headings = findHeadings(document.body, []);
+            }
+
+            //递归遍历document的body，查找标题元素
+            function findHeadings(root, sects){
+                for(var c = root.firstChild; c != null; c = c.nextSibling){
+                    if(c.nodeType !== 1) continue;
+                    if(c.tagName.length === 2 && c.tagName.charAt(0) === "H"){
+                        sects.push(c);
+                    }else{
+                        findHeadings(c, sects);
+                    }
+                }
+                return sects;
+            }
+
+            //初始化一个数组来保持跟踪章节号
+            var sectionNumbers = [0, 0, 0, 0, 0, 0];
+
+            //循环已找到的标题元素
+            for(var h = 0; h < headings.length; h++){
+                var heading = headings[h];
+
+                //跳过在TOC容器中的标题元素
+                if(heading.parentNode == toc) continue;
+
+                //判定标题的级别
+                var level = parseInt(heading.tagName.charAt(1));
+                if(isNaN(level) || level < 1 || level > 6) continue;
+
+                //对于该标题级别增加sectionNumbers对应的数字
+                //重置所有标题比它级别低的数字为零
+                sectionNumbers[level-1] ++;
+                for(var i = level; i < 6; i++) sectionNumbers[i] = 0;
+
+                //产生章节号，如2.3.1
+                var sectionNumber = sectionNumbers.slice(0,level).join('.');
+
+                // 为标题增加章节号
+                //把数字放在<span>中，使得其可以用样式修饰
+                var span = document.createElement("span");
+                span.className = "TOCSectNum";
+                span.innerHTML = sectionNumber;
+                heading.insertBefore(span, heading.firstChild);
+
+                //用命名的锚点将标题包起来，以便为它增加链接
+                var anchor = document.createElement("a");
+                anchor.name = "TOC" + sectionNumber;
+                heading.parentNode.insertBefore(anchor, heading);
+                anchor.appendChild(heading);
+
+                //现在为该节创建一个链接
+                var link = document.createElement("a");
+                link.href = "#TOC" + sectionNumber;
+                link.innerHTML = heading.innerHTML;
+
+                //将链接放在一个div中，div用于基于级别名字的样式修饰
+                var entry = document.createElement("div");
+                entry.className = "TOCEntry TOCLevel" + level;
+                entry.appendChild(link);
+
+                //该div添加到TOC容器中
+                toc.appendChild(entry);
+            }
         });
     </script>
 </head>
 <body>
-
+<h1>标题一</h1>
+<p>
+    ssf <br>
+    asdfa <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias aperiam distinctio dolorum nisi, obcaecati odio temporibus. Animi dolores expedita non optio pariatur porro reiciendis repellendus similique, tenetur voluptatibus. Odit, quis?
+</p>
+<h2>二级标题一</h2>
+<p>
+    ssf <br>
+    asdfa <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus alias cumque debitis ducimus enim id illum impedit molestiae neque nostrum odit perferendis quae quaerat repellat, similique soluta tempora ullam veniam.
+</p>
+<h3>三级标题一</h3>
+<p>
+    ssf <br>
+    asdfa <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias aperiam consequatur cupiditate deleniti dicta doloremque, error harum ipsa iste magni molestias nisi, optio quaerat quia recusandae, ullam vel voluptas?
+</p>
+<h1>标题二</h1>
+<p>
+    ssf <br>
+    asdfa <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Excepturi, neque recusandae! Asperiores at blanditiis commodi corporis cum, ea eius esse eveniet ex ipsa, ipsum nam nostrum officiis recusandae sit sunt.
+    <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab amet animi aperiam at commodi corporis cupiditate debitis dolorem et fugiat id in modi natus neque omnis quis recusandae, sapiente voluptate!
+    <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, assumenda autem cupiditate, ducimus esse et expedita facere fuga laboriosam molestiae nam odio quaerat qui quod rem sapiente sit unde voluptatem.
+    <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam beatae explicabo id illum impedit iste necessitatibus praesentium vel voluptatem? Accusantium, dolore eos fugit magnam mollitia qui vero! Eveniet quibusdam, sed.
+    <br>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid amet architecto blanditiis commodi cum, dolor, earum esse et eveniet excepturi libero modi neque placeat quia quis repellendus rerum sunt vel!
+</p>
 </body>
 </html>
