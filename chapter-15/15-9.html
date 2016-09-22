@@ -28,6 +28,16 @@
             //对怪异模式下的浏览器
             return {w: d.body.clientWidth, h: d.body.clientHeight};
         }
+
+        //getBoundingClientRect()
+        var box = e.getBoundingRect(); // 获得在视口中的坐标位置
+        var offsets = getScrollOffsets(); //15-8定义的工具函数
+        var x = box.left + offsets.x;
+        var y = box.top + offsets.y;
+        //计算元素的width和height
+        var box = e.getBoundingRect();
+        var w = box.width || (box.right - box.left);
+        var h = box.height || (box.bottom - box.top);
     </script>
 </head>
 <body>
