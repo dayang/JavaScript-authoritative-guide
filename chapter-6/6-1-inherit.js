@@ -18,6 +18,8 @@ function inherit(p){
     return new f();
 }
 
-var a = inherit({x: 2, y: "good morning"});
+module.exports = inherit;
+
+/*var a = inherit({x: 2, y: "good morning"});
 console.log(a.hasOwnProperty("x"));
-console.log(a.x, a.y);
+console.log(a.x, a.y);*/
