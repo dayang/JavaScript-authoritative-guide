@@ -1,0 +1,28 @@
+<!--用于HTTP请求的编码对象-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        //按照 RFC3986 ，空格编码后是 %20
+        //但按照 HTML 标准，application/x-www-form-urlencoded 空格替换为+
+        function encodeFormData(data){
+            if(!data) return "";
+            var pairs = [];
+            for(var name in data){
+                if(!data.hasOwnProperty(name)) continue;
+                if(typeof data[name] === "function") continue;
+                var value = data[name].toString();
+                name = encodeURIComponent(name).replace(/%20/g,"+");
+                value = encodeURIComponent(value.replace(/%20/g, "+"));
+                pairs.push(name + "=" + value);
+            }
+            return pairs.join("&");
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

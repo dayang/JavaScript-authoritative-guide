@@ -1,0 +1,22 @@
+<!--使用表单编码数据发起GET请求-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function getData(url, data, callback){
+            var request = new XMLHttpRequest();
+            request.open('GET',url + "?" + encodeFormData(data));
+            request.onreadystatechange = function(){
+                if(request.readyState === 4 && callback)
+                    callback(request);
+            };
+            request.send();
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

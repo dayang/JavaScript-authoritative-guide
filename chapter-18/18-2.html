@@ -1,0 +1,26 @@
+<!--获取HTTP响应的onreadystatechange-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function getText(url, callback){
+            var request = new XMLHttpRequest();
+            request.open("GET", url);
+            request.onreadystatechange = function () {
+                if(request.readyState == 4 && request.status == 200){
+                    var type = request.getResponseHeader("Content-Type");
+                    if(type.match(/^text/)){
+                        callback(request.responseText);
+                    }
+                }
+            };
+            request.send();
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

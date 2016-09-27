@@ -1,0 +1,19 @@
+<!--用POST方法发送纯文本给服务器-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function postMessage(msg){
+            var request = new XMLHttpRequest();
+            request.open("POST","/log.php");
+            request.setRequestHeader("Content-Type","text/plain;charset=UTF-8");
+            request.send(msg);
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
