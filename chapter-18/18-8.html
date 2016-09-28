@@ -1,0 +1,32 @@
+<!--使用XML文档作为其主体的HTTP POST请求-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function postQuery(url, what, where, radius, callback){
+            var request = new XMLHttpRequest();
+            request.open("POST", url);
+            request.onreadystatechange = function(){
+                if(request.readyState === 4 && callback){
+                    callback(request)
+                }
+            };
+
+            var doc = document.implementation.createDocument("","query",null);
+            var query = doc.documentElement;
+            var find = doc.createElement("find");
+            query.appendChild(find);
+            find.setAttribute("zipcode", where);
+            find.setAttribute("radius", radius);
+            find.appendChild(doc.createTextNode(what));
+
+            request.send(doc);
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>

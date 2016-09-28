@@ -1,0 +1,34 @@
+<!--使用HTTP POST请求上传文件-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        //查找有data-uploadto属性的全部<input type="file">元素，
+        //并注册onchange事件处理程序
+        //这样任何选择的文件都会自动通过POST方法发送到指定的“uploadto"URL
+        //服务器的响应是忽略的
+        whenReady(function(){
+           var elts = document.getElementsByTagName("input");
+            for(var i = 0; i < elts.length; i++){
+                var input = elts[i];
+                if(input.type !== "file") continue;
+                var url = input.getAttribute("data-uploadto");
+                if(!url) continue;
+
+                input.addEventListener("change", function(){
+                    var file = this.files[0];
+                    if(!file) return;
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", url);
+                    xhr.send(file);
+                }, false);
+            }
+        });
+    </script>
+</head>
+<body>
+
+</body>
+</html>
